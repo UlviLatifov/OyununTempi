@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAH0CAMAAAD8CC+4AAAARVBMVEWr/0Cm+D4AAABDZBmq/j+j9D0ZJgmg7zw8WRZejCOk9j2O1jU/Xxea5zo0TROU3jdBYRiW4TgPFgVLcByL0TRmmSaW4Dh5KpPHAAACsklEQVR42uzRBQHDABAEsN+P2b/bsYFxr4mFFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAECYSf+bad3N+inzQjrSkZ5BOtKRjvQM0pGOdKRnkI50pCM9g3SkIx3pGaQjHelIzyAd6UhHegbpSEc60jNIRzrSkZ5BOtKRjvQM0pGOdKTHkI50pEv/NwvpT5COdKQjPYJ0pCdbrp6x3nzOtp+xq4fNU2pM9v2MQ33O8SSyXCTAAGjXvmoQAAAoBiY4YPqXigU2L82dhf4W0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/Qtoh9PrzhL+bjLYc1VFNERHdERHdERHdHXiI7oiI7oiI7oiM5NdBPFX4guOqIjOqIjOqIjOqLvEB3RER3RER3RER3Rd4iO6IiO6IiO6IiO6DtER3RER3RER3RER/QdoiM6oiM6ogMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMy5A5RmafeD+CGAAAAAAElFTkSuQmCC"/>
+<title>Oyunun Tempi</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow-x:hidden;}
+
+:root{
+  --lime:#c8ff00;
+  --black:#0a0a0a;
+  --surface:#111;
+  --card:#161616;
+  --red:#ff3030;
+  --muted:#444;
+  --muted2:#666;
+  --text:#f5f5f5;
+  --border:#222;
+}
+
+body{
+  background:var(--black);
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+  min-height:100vh;
+}
+
+/* HEADER */
+header{
+  position:sticky;top:0;z-index:200;
+  height:56px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;
+  background:var(--black);
+  border-bottom:1px solid var(--border);
+}
+
+.logo{
+  font-family:'Barlow Condensed',sans-serif;font-weight:700;
+  font-size:26px;
+  letter-spacing:3px;
+  color:var(--text);
+  text-decoration:none;
+  line-height:1;
+}
+.logo span{color:var(--lime);}
+
+.mbtn{
+  width:36px;height:36px;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:5px;
+  cursor:pointer;border:none;background:none;
+}
+.mdot{width:4px;height:4px;border-radius:50%;background:var(--muted2);}
+.mbtn.act .mdot{background:var(--lime);}
+
+/* MORE MENU */
+.mmenu{
+  position:fixed;top:60px;right:12px;
+  width:220px;
+  background:#151515;
+  border:1px solid var(--border);
+  border-radius:4px;
+  overflow:hidden;
+  z-index:300;
+  box-shadow:0 12px 40px rgba(0,0,0,.8);
+  transform:scale(0.95) translateY(-6px);
+  transform-origin:top right;
+  opacity:0;pointer-events:none;
+  transition:all .2s cubic-bezier(0.34,1.3,0.64,1);
+}
+.mmenu.open{transform:scale(1) translateY(0);opacity:1;pointer-events:all;}
+.mhdr{
+  padding:10px 14px 8px;
+  font-size:9px;font-weight:600;letter-spacing:3px;
+  text-transform:uppercase;color:var(--muted2);
+  border-bottom:1px solid var(--border);
+}
+.mitem{
+  display:flex;align-items:center;gap:12px;
+  padding:13px 14px;
+  cursor:pointer;
+  border-bottom:1px solid var(--border);
+  text-decoration:none;color:var(--text);
+  font-size:14px;font-weight:500;
+  transition:background .1s;
+}
+.mitem:last-child{border-bottom:none;}
+.mitem:active{background:#1e1e1e;}
+.micn{font-size:16px;width:20px;text-align:center;}
+.marr{margin-left:auto;color:var(--muted);font-size:12px;}
+
+/* MAIN */
+main{position:relative;z-index:1;padding:0 0 80px;max-width:520px;margin:0 auto;}
+
+/* LIVE TICKER */
+.ticker-bar{
+  display:flex;align-items:center;gap:10px;
+  background:#1a0000;
+  border-bottom:1px solid #330000;
+  padding:10px 20px;
+}
+.ldot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--red);flex-shrink:0;
+  animation:lp 1s ease-in-out infinite;
+}
+@keyframes lp{0%,100%{opacity:1}50%{opacity:.3}}
+.ltxt{
+  font-size:10px;font-weight:600;
+  letter-spacing:2px;color:var(--red);
+  text-transform:uppercase;flex-shrink:0;
+}
+.tscroll{flex:1;overflow:hidden;}
+.tinner{
+  white-space:nowrap;font-size:12px;
+  color:#ff7070;font-weight:400;
+  animation:scroll 20s linear infinite;
+}
+@keyframes scroll{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
+
+/* SECTION HEADER */
+.slabel{
+  display:flex;align-items:center;gap:0;
+  padding:20px 20px 12px;
+}
+.sltext{
+  font-size:9px;font-weight:600;
+  letter-spacing:3px;text-transform:uppercase;
+  color:var(--muted2);
+}
+
+/* MATCH CARD — brutal minimal */
+.mc{
+  border-bottom:1px solid var(--border);
+  animation:ci .35s ease both;
+  overflow:hidden;
+}
+@keyframes ci{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.mc.lv{border-left:3px solid var(--red);}
+.mc.fn{opacity:.45;}
+
+/* League row */
+.clg{
+  padding:12px 20px 0;
+  display:flex;align-items:center;gap:6px;
+}
+.clname{
+  font-size:10px;font-weight:500;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--muted2);
+}
+
+/* Match main row */
+.cmain{
+  display:flex;align-items:center;
+  padding:14px 20px 16px;
+  cursor:pointer;gap:0;
+  position:relative;
+}
+.mc.hasL .cmain{padding-right:36px;}
+
+.tb{flex:1;min-width:0;overflow:hidden;}
+.tname{
+  font-family:'Barlow Condensed',sans-serif;font-weight:700;
+  font-size:clamp(14px,4.5vw,24px);
+  letter-spacing:1px;
+  line-height:1.1;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  max-width:100%;
+  color:var(--text);
+}
+.mc.fn .tname{color:var(--muted2);}
+
+.vsb{
+  flex-shrink:0;
+  display:flex;flex-direction:column;
+  align-items:center;gap:5px;
+  padding:0 10px;
+  min-width:80px;
+}
+
+.vst{
+  font-family:'Barlow Condensed',sans-serif;font-weight:700;
+  font-size:22px;letter-spacing:2px;
+  color:var(--lime);
+}
+.lv .vst{color:var(--red);}
+.fn .vst{color:var(--muted2);}
+
+/* STATUS PILLS */
+.spill{
+  font-size:8px;font-weight:600;
+  letter-spacing:1.5px;text-transform:uppercase;
+  padding:3px 8px;border-radius:2px;
+}
+.pl{background:rgba(255,48,48,.15);color:var(--red);animation:pp 1.2s ease-in-out infinite;}
+@keyframes pp{0%,100%{opacity:1}50%{opacity:.5}}
+.pu{background:rgba(200,255,0,.08);color:var(--lime);}
+.ps{background:rgba(200,255,0,.12);color:var(--lime);animation:pp 1.2s ease-in-out infinite;}
+.pf{background:#1a1a1a;color:var(--muted2);}
+
+.tb.r{text-align:right;}
+.tb.r .tname{text-align:right;}
+
+.chevr{
+  position:absolute;right:20px;top:50%;
+  transform:translateY(-50%);
+  font-size:10px;color:var(--muted);
+  transition:transform .25s;
+}
+.mc.open .chevr{transform:translateY(-50%) rotate(180deg);}
+
+/* COUNTDOWN */
+.cdown{
+  padding:0 20px 12px;
+  font-size:11px;color:var(--muted2);
+  letter-spacing:.5px;display:none;
+}
+.mc.up .cdown{display:block;}
+
+/* LINKS */
+.clinks{display:none;flex-direction:column;gap:0;padding:0 0 4px;}
+.mc.open .clinks{display:flex;}
+.lsep{height:1px;background:var(--border);}
+.lbtns-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 20px 16px;}
+.lbtn{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:6px;
+  padding:14px 8px;
+  background:#151515;
+  border:1px solid var(--border);
+  border-radius:6px;
+  color:var(--text);text-decoration:none;
+  font-size:12px;font-weight:600;
+  letter-spacing:.5px;
+  transition:all .15s;
+  text-align:center;
+  min-height:64px;
+}
+.lbtn:active{background:rgba(200,255,0,.08);border-color:rgba(200,255,0,.3);color:var(--lime);}
+.lbtn:active .lbtn-icn{color:var(--lime);}
+.lbtn-icn{font-size:20px;line-height:1;}
+.lbtn-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;letter-spacing:1px;color:var(--text);}
+.lbtn:active .lbtn-label{color:var(--lime);}
+.lbtn-sub{font-size:9px;color:var(--muted2);letter-spacing:1px;text-transform:uppercase;}
+
+/* EMPTY / LOADING */
+.empty{text-align:center;padding:60px 20px;color:var(--muted);}
+.eico{font-size:40px;margin-bottom:12px;opacity:.5;}
+.etxt{font-size:14px;font-weight:500;letter-spacing:1px;}
+.loading{text-align:center;padding:50px;}
+.spin{
+  width:24px;height:24px;border-radius:50%;
+  border:2px solid var(--border);
+  border-top-color:var(--lime);
+  animation:sp .7s linear infinite;
+  margin:0 auto 12px;
+}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* OVERLAY */
+.ov{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.85);z-index:500;
+  backdrop-filter:blur(8px);
+  align-items:center;justify-content:center;padding:16px;
+}
+.ov.act{display:flex;}
+.ovbg{position:absolute;inset:0;z-index:-1;}
+
+/* PIN */
+.pmod{
+  background:#111;
+  border:1px solid var(--border);
+  border-radius:4px;
+  padding:32px 24px 24px;
+  width:100%;max-width:300px;
+  text-align:center;
+  animation:pop .25s cubic-bezier(0.34,1.3,0.64,1);
+  box-shadow:0 40px 80px rgba(0,0,0,.8);
+}
+@keyframes pop{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+.pbadge{
+  width:44px;height:44px;
+  background:rgba(200,255,0,.08);
+  border:1px solid rgba(200,255,0,.2);
+  border-radius:4px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;margin:0 auto 14px;
+}
+.ptitle{
+  font-family:'Barlow Condensed',sans-serif;font-weight:700;
+  font-size:24px;letter-spacing:3px;margin-bottom:4px;
+}
+.psub{font-size:12px;color:var(--muted2);margin-bottom:24px;}
+.pdots{display:flex;justify-content:center;gap:8px;margin-bottom:24px;}
+.pd{
+  width:10px;height:10px;border-radius:50%;
+  border:1px solid var(--muted);
+  transition:all .15s;
+}
+.pd.f{background:var(--lime);border-color:var(--lime);box-shadow:0 0 10px rgba(200,255,0,.4);}
+.pd.e{background:var(--red);border-color:var(--red);}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.kpad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
+.key{
+  background:#1a1a1a;
+  border:1px solid var(--border);
+  border-radius:4px;
+  color:var(--text);
+  font-family:'Barlow Condensed',sans-serif;font-weight:700;
+  font-size:22px;
+  padding:14px;cursor:pointer;
+  transition:all .1s;
+}
+.key:active{background:rgba(200,255,0,.1);border-color:rgba(200,255,0,.3);color:var(--lime);}
+.kdl{font-size:16px;color:var(--muted2);}
+.pcancel{
+  background:none;border:none;
+  color:var(--muted);font-family:'DM Sans',sans-serif;
+  font-size:12px;cursor:pointer;padding:8px 16px;
+}
+
+/* ADMIN */
+.awrap{
+  background:#111;
+  border:1px solid var(--border);
+  border-radius:4px;
+  width:100%;max-width:480px;
+  max-height:88vh;overflow-y:auto;
+  animation:pop .25s cubic-bezier(0.34,1.3,0.64,1);
+  box-shadow:0 40px 80px rgba(0,0,0,.8);
+}
+.awrap::-webkit-scrollbar{width:3px}
+.awrap::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.atop{
+  padding:16px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;background:#111;z-index:2;
+}
+.atr{display:flex;align-items:center;gap:10px;}
+.atitle{
+  font-family:'Barlow Condensed',sans-serif;font-weight:700;
+  font-size:20px;letter-spacing:2px;color:var(--lime);
+}
+.ax{
+  width:30px;height:30px;
+  background:#1a1a1a;border:1px solid var(--border);
+  border-radius:4px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;color:var(--muted2);cursor:pointer;
+}
+.ax:active{color:var(--red);}
+.abody{padding:20px;}
+.asec{
+  font-size:9px;font-weight:600;letter-spacing:3px;
+  text-transform:uppercase;color:var(--muted2);margin-bottom:12px;
+}
+.adiv{height:1px;background:var(--border);margin:20px 0;}
+.fg{margin-bottom:10px;}
+.fl{
+  font-size:10px;font-weight:600;letter-spacing:1px;
+  text-transform:uppercase;color:var(--muted2);
+  display:block;margin-bottom:5px;
+}
+.fi,.fs{
+  width:100%;background:#1a1a1a;
+  border:1px solid var(--border);
+  border-radius:4px;color:var(--text);
+  font-family:'DM Sans',sans-serif;
+  font-size:14px;font-weight:400;
+  padding:10px 12px;outline:none;
+  transition:border-color .2s;
+  -webkit-appearance:none;
+}
+.fi:focus,.fs:focus{border-color:rgba(200,255,0,.4);}
+.fi::placeholder{color:var(--muted);}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.abtn{
+  width:100%;
+  background:var(--lime);color:#000;
+  border:none;border-radius:4px;
+  font-family:'Barlow Condensed',sans-serif;font-weight:700;
+  font-size:18px;letter-spacing:2px;
+  padding:14px;cursor:pointer;
+  transition:opacity .15s;margin-top:4px;
+}
+.abtn:active{opacity:.85;}
+.ami{
+  display:flex;align-items:center;gap:12px;
+  border-bottom:1px solid var(--border);
+  padding:13px 0;
+}
+.ami:last-child{border-bottom:none;}
+.aminfo{flex:1;min-width:0;}
+.amname{
+  font-family:'Barlow Condensed',sans-serif;font-weight:700;
+  font-size:16px;letter-spacing:.5px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  margin-bottom:2px;
+}
+.ammeta{font-size:11px;color:var(--muted2);}
+.adel{
+  width:30px;height:30px;flex-shrink:0;
+  background:rgba(255,48,48,.08);
+  border:1px solid rgba(255,48,48,.15);
+  border-radius:4px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;cursor:pointer;
+}
+.adel:active{background:rgba(255,48,48,.2);}
+.aedit{
+  width:30px;height:30px;flex-shrink:0;
+  background:rgba(200,255,0,.08);
+  border:1px solid rgba(200,255,0,.15);
+  border-radius:4px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;cursor:pointer;margin-right:6px;
+}
+.aedit:active{background:rgba(200,255,0,.2);}
+
+/* EDIT FORM inside admin list */
+.aeditform{
+  background:#1a1a1a;border:1px solid var(--border);
+  border-radius:4px;padding:14px;margin-top:8px;
+  display:none;
+}
+.aeditform.open{display:block;}
+.esbtn{
+  background:var(--lime);color:#000;border:none;border-radius:4px;
+  font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;letter-spacing:1px;
+  padding:10px 16px;cursor:pointer;margin-top:8px;width:100%;
+}
+.esbtn:active{opacity:.85;}
+
+
+/* TOAST */
+.toast{
+  position:fixed;bottom:28px;left:50%;
+  transform:translateX(-50%) translateY(70px);
+  background:var(--lime);color:#000;
+  font-family:'Barlow Condensed',sans-serif;font-weight:700;
+  font-size:14px;letter-spacing:2px;
+  padding:10px 22px;border-radius:2px;
+  z-index:9999;transition:transform .25s cubic-bezier(0.34,1.3,0.64,1);
+  pointer-events:none;white-space:nowrap;
+  box-shadow:0 6px 24px rgba(200,255,0,.25);
+}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.err{background:var(--red);box-shadow:0 6px 24px rgba(255,48,48,.25);color:#fff;}
+/* PAGE OVERLAYS */
+.pageOv{display:none;position:fixed;inset:0;z-index:600;background:var(--black);overflow-y:auto;animation:pgIn .25s ease both;}
+.pageOv.act{display:block;}
+@keyframes pgIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+.pageWrap{max-width:520px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;}
+.pageTop{position:sticky;top:0;z-index:2;background:var(--black);border-bottom:1px solid var(--border);padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between;}
+.pageTitle{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:20px;letter-spacing:2px;color:var(--lime);}
+.pageBody{padding:24px 20px 80px;flex:1;}
+/* ABOUT */
+.aboutBadge{width:64px;height:64px;background:rgba(200,255,0,.08);border:1px solid rgba(200,255,0,.2);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:22px;letter-spacing:2px;color:var(--lime);margin:0 auto 12px;}
+.aboutName{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:28px;letter-spacing:3px;text-align:center;margin-bottom:4px;}
+.aboutSub{font-size:12px;color:var(--muted2);text-align:center;letter-spacing:1px;margin-bottom:24px;}
+.aboutDivider{height:1px;background:var(--border);margin-bottom:20px;}
+.aboutText{font-size:14px;line-height:1.7;color:#bbb;margin-bottom:14px;}
+.aboutStats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border-radius:4px;overflow:hidden;margin-top:24px;}
+.aboutStat{background:var(--card);padding:18px 12px;text-align:center;}
+.aboutStatN{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:26px;color:var(--lime);letter-spacing:1px;}
+.aboutStatL{font-size:10px;color:var(--muted2);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
+/* CONTACT */
+.contactIntro{font-size:13px;color:var(--muted2);margin-bottom:20px;line-height:1.6;}
+.contactItem{display:flex;align-items:center;gap:14px;padding:16px 0;border-bottom:1px solid var(--border);text-decoration:none;color:var(--text);}
+.contactItem:last-child{border-bottom:none;}
+.contactIcn{font-size:22px;width:36px;text-align:center;flex-shrink:0;}
+.contactInfo{flex:1;}
+.contactTitle{font-size:14px;font-weight:600;margin-bottom:2px;}
+.contactSub{font-size:12px;color:var(--muted2);}
+/* ALERTS */
+.alertCard{
+  margin:0 20px 10px;
+  background:#1a0a00;
+  border:1px solid #3a1f00;
+  border-left:3px solid #ff8c00;
+  border-radius:4px;
+  padding:14px 16px;
+  animation:ci .35s ease both;
+}
+.alertCard.info{background:#001a0f;border-color:#003d1f;border-left-color:var(--lime);}
+.alertCard.warning{background:#1a0a00;border-color:#3a1f00;border-left-color:#ff8c00;}
+.alertCard.danger{background:#1a0000;border-color:#3a0000;border-left-color:var(--red);}
+.alertTop{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.alertIcon{font-size:13px;}
+.alertTitle{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;letter-spacing:1px;color:var(--text);}
+.alertCard.info .alertTitle{color:var(--lime);}
+.alertCard.warning .alertTitle{color:#ff8c00;}
+.alertCard.danger .alertTitle{color:var(--red);}
+.alertBody{font-size:12px;color:#999;line-height:1.6;}
+.alertTime{font-size:10px;color:var(--muted);margin-top:6px;letter-spacing:1px;}
+.alertPageItem{border-bottom:1px solid var(--border);padding:18px 20px;animation:ci .3s ease both;}
+.alertPageItem:last-child{border-bottom:none;}
+.alertPageTop{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.alertPageIcon{width:32px;height:32px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.alertPageItem.info .alertPageIcon{background:rgba(200,255,0,.08);border:1px solid rgba(200,255,0,.2);}
+.alertPageItem.warning .alertPageIcon{background:rgba(255,140,0,.08);border:1px solid rgba(255,140,0,.2);}
+.alertPageItem.danger .alertPageIcon{background:rgba(255,48,48,.08);border:1px solid rgba(255,48,48,.2);}
+.alertPageTitle{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;letter-spacing:1px;}
+.alertPageItem.info .alertPageTitle{color:var(--lime);}
+.alertPageItem.warning .alertPageTitle{color:#ff8c00;}
+.alertPageItem.danger .alertPageTitle{color:var(--red);}
+.alertPageBody{font-size:13px;color:#aaa;line-height:1.7;}
+.alertPageTime{font-size:10px;color:var(--muted);margin-top:8px;letter-spacing:1px;text-transform:uppercase;}
+.noAlerts{text-align:center;padding:60px 20px;color:var(--muted);}
+.noAlerts .eico{font-size:36px;margin-bottom:10px;opacity:.4;}
+/* QUIZ */
+.qcard{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:24px 20px;margin-bottom:16px;}
+.qnum{font-size:10px;color:var(--muted2);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+.qtext{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:22px;letter-spacing:1px;line-height:1.2;margin-bottom:20px;}
+.qopts{display:flex;flex-direction:column;gap:8px;}
+.qopt{padding:13px 16px;background:#1a1a1a;border:1px solid var(--border);border-radius:4px;font-size:14px;font-weight:500;cursor:pointer;transition:all .15s;text-align:left;color:var(--text);width:100%;}
+.qopt:active{background:rgba(200,255,0,.08);}
+.qopt.correct{background:rgba(200,255,0,.12);border-color:rgba(200,255,0,.4);color:var(--lime);}
+.qopt.wrong{background:rgba(255,48,48,.1);border-color:rgba(255,48,48,.3);color:var(--red);}
+.qresult{text-align:center;padding:16px 0 0;font-size:13px;color:var(--muted2);}
+.qscore{text-align:center;padding:20px;}
+.qscoreN{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:64px;color:var(--lime);line-height:1;}
+.qscoreL{font-size:12px;color:var(--muted2);letter-spacing:2px;text-transform:uppercase;margin-top:4px;}
+.qnextBtn{width:100%;background:var(--lime);color:#000;border:none;border-radius:4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;letter-spacing:2px;padding:14px;cursor:pointer;margin-top:16px;}
+.qrestartBtn{width:100%;background:transparent;border:1px solid var(--border);color:var(--text);border-radius:4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;letter-spacing:2px;padding:14px;cursor:pointer;margin-top:10px;}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a class="logo" href="https://whatsapp.com/channel/0029VaEBKeQ1yT26BEY2EP3i" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAH0CAMAAAD8CC+4AAAARVBMVEWr/0Cm+D4AAABDZBmq/j+j9D0ZJgmg7zw8WRZejCOk9j2O1jU/Xxea5zo0TROU3jdBYRiW4TgPFgVLcByL0TRmmSaW4Dh5KpPHAAACsklEQVR42uzRBQHDABAEsN+P2b/bsYFxr4mFFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAECYSf+bad3N+inzQjrSkZ5BOtKRjvQM0pGOdKRnkI50pCM9g3SkIx3pGaQjHelIzyAd6UhHegbpSEc60jNIRzrSkZ5BOtKRjvQM0pGOdKTHkI50pEv/NwvpT5COdKQjPYJ0pCdbrp6x3nzOtp+xq4fNU2pM9v2MQ33O8SSyXCTAAGjXvmoQAAAoBiY4YPqXigU2L82dhf4W0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/Qtoh9PrzhL+bjLYc1VFNERHdERHdERHdHXiI7oiI7oiI7oiM5NdBPFX4guOqIjOqIjOqIjOqLvEB3RER3RER3RER3Rd4iO6IiO6IiO6IiO6DtER3RER3RER3RER/QdoiM6oiM6ogMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMy5A5RmafeD+CGAAAAAAElFTkSuQmCC" style="width:22px;height:22px;border-radius:3px;opacity:0.85;"/>OYUNUN <span>TEMPİ</span></a>
+  <div class="mbtn" id="moreBtn">
+    <div class="mdot"></div>
+    <div class="mdot"></div>
+    <div class="mdot"></div>
+  </div>
+</header>
+
+<!-- MORE MENU -->
+<div class="mmenu" id="moreMenu">
+  <div class="mhdr">Menyu</div>
+  <a class="mitem" href="https://whatsapp.com/channel/0029VaEBKeQ1yT26BEY2EP3i" target="_blank">
+    <span class="micn"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAH0CAMAAAD8CC+4AAAARVBMVEWr/0Cm+D4AAABDZBmq/j+j9D0ZJgmg7zw8WRZejCOk9j2O1jU/Xxea5zo0TROU3jdBYRiW4TgPFgVLcByL0TRmmSaW4Dh5KpPHAAACsklEQVR42uzRBQHDABAEsN+P2b/bsYFxr4mFFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAECYSf+bad3N+inzQjrSkZ5BOtKRjvQM0pGOdKRnkI50pCM9g3SkIx3pGaQjHelIzyAd6UhHegbpSEc60jNIRzrSkZ5BOtKRjvQM0pGOdKTHkI50pEv/NwvpT5COdKQjPYJ0pCdbrp6x3nzOtp+xq4fNU2pM9v2MQ33O8SSyXCTAAGjXvmoQAAAoBiY4YPqXigU2L82dhf4W0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/Qtoh9PrzhL+bjLYc1VFNERHdERHdERHdHXiI7oiI7oiI7oiM5NdBPFX4guOqIjOqIjOqIjOqLvEB3RER3RER3RER3Rd4iO6IiO6IiO6IiO6DtER3RER3RER3RER/QdoiM6oiM6ogMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMy5A5RmafeD+CGAAAAAAElFTkSuQmCC" style="width:18px;height:18px;vertical-align:middle;border-radius:3px;"/></span> WhatsApp Kanalı <span class="marr">›</span>
+  </a>
+  <div class="mitem" onclick="closeMenu();openPage('alertsPage')"><span class="micn">🔔</span> Xəbərdarlıqlar <span id="menuAlertBadge" style="margin-left:auto;background:var(--red);color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:10px;display:none;"></span><span class="marr" style="margin-left:4px;">›</span></div>
+  <div class="mitem" onclick="closeMenu();openPage('quizPage')"><span class="micn">🧠</span> Quiz <span class="marr">›</span></div>
+  <div class="mitem" onclick="closeMenu();openPage('aboutPage')"><span class="micn">⚽</span> Haqqımızda <span class="marr">›</span></div>
+  <div class="mitem" onclick="closeMenu();openPage('contactPage')"><span class="micn">📩</span> Əlaqə <span class="marr">›</span></div>
+</div>
+
+<!-- MAIN -->
+<main>
+  <div class="ticker-bar" id="tickerBar" style="display:none">
+    <div class="ldot"></div>
+    <div class="ltxt">Canlı</div>
+    <div class="tscroll"><div class="tinner" id="tickerTxt"></div></div>
+  </div>
+  <div id="homeAlerts"></div>
+  <div class="slabel">
+    <div class="sltext">Bu günün matçları</div>
+  </div>
+  <div id="matchList">
+    <div class="loading"><div class="spin"></div><div style="font-size:12px;letter-spacing:2px;color:#444">YÜKLƏNİR</div></div>
+  </div>
+</main>
+
+<!-- PIN OVERLAY -->
+<div class="ov" id="pinOv">
+  <div class="ovbg" onclick="closePin()"></div>
+  <div class="pmod">
+    <div class="pbadge" style="background:transparent;border:none;"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAH0CAMAAAD8CC+4AAAARVBMVEWr/0Cm+D4AAABDZBmq/j+j9D0ZJgmg7zw8WRZejCOk9j2O1jU/Xxea5zo0TROU3jdBYRiW4TgPFgVLcByL0TRmmSaW4Dh5KpPHAAACsklEQVR42uzRBQHDABAEsN+P2b/bsYFxr4mFFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAECYSf+bad3N+inzQjrSkZ5BOtKRjvQM0pGOdKRnkI50pCM9g3SkIx3pGaQjHelIzyAd6UhHegbpSEc60jNIRzrSkZ5BOtKRjvQM0pGOdKTHkI50pEv/NwvpT5COdKQjPYJ0pCdbrp6x3nzOtp+xq4fNU2pM9v2MQ33O8SSyXCTAAGjXvmoQAAAoBiY4YPqXigU2L82dhf4W0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/Qtoh9PrzhL+bjLYc1VFNERHdERHdERHdHXiI7oiI7oiI7oiM5NdBPFX4guOqIjOqIjOqIjOqLvEB3RER3RER3RER3Rd4iO6IiO6IiO6IiO6DtER3RER3RER3RER/QdoiM6oiM6ogMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMy5A5RmafeD+CGAAAAAAElFTkSuQmCC" style="width:36px;height:36px;"/></div>
+    <div class="ptitle">Admin Giriş</div>
+    <div class="psub">Şifrəni daxil et</div>
+    <div class="pdots">
+      <div class="pd" id="pd0"></div><div class="pd" id="pd1"></div>
+      <div class="pd" id="pd2"></div><div class="pd" id="pd3"></div>
+      <div class="pd" id="pd4"></div><div class="pd" id="pd5"></div>
+      <div class="pd" id="pd6"></div><div class="pd" id="pd7"></div>
+    </div>
+    <div class="kpad">
+      <button class="key" onclick="kp('1')">1</button>
+      <button class="key" onclick="kp('2')">2</button>
+      <button class="key" onclick="kp('3')">3</button>
+      <button class="key" onclick="kp('4')">4</button>
+      <button class="key" onclick="kp('5')">5</button>
+      <button class="key" onclick="kp('6')">6</button>
+      <button class="key" onclick="kp('7')">7</button>
+      <button class="key" onclick="kp('8')">8</button>
+      <button class="key" onclick="kp('9')">9</button>
+      <button class="key" onclick="kp('')"></button>
+      <button class="key" onclick="kp('0')">0</button>
+      <button class="key kdl" onclick="kdel()">⌫</button>
+    </div>
+    <button class="pcancel" onclick="closePin()">Ləğv et</button>
+  </div>
+</div>
+
+<!-- ADMIN OVERLAY -->
+<div class="ov" id="adminOv">
+  <div class="ovbg" onclick="closeAdmin()"></div>
+  <div class="awrap">
+    <div class="atop">
+      <div class="atr">
+        <div class="atitle">Admin Paneli</div>
+      </div>
+      <div class="ax" onclick="closeAdmin()">✕</div>
+    </div>
+    <div class="abody">
+      <div class="asec">Yeni matç əlavə et</div>
+      <div class="fg">
+        <label class="fl">Liqa / Turnir</label>
+        <select class="fs" id="aLeague">
+          <optgroup label="── UEFA Klublar ──">
+          <option value="🏆 Çempionlar Liqası">🏆 Çempionlar Liqası</option>
+          <option value="🌍 Avropa Liqası">🌍 Avropa Liqası</option>
+          <option value="🏆 UEFA Konfrans Liqası">🏆 UEFA Konfrans Liqası</option>
+          <option value="🌍 UEFA Super Kuboku">🌍 UEFA Super Kuboku</option>
+          </optgroup>
+          <optgroup label="── Millı Komandalar ──">
+          <option value="🌍 Dünya Kuboku 2026">🌍 Dünya Kuboku 2026</option>
+          <option value="🌍 Dünya Kuboku Seçmə — Avropa">🌍 Dünya Kuboku Seçmə — Avropa</option>
+          <option value="🌍 Dünya Kuboku Seçmə — Asiya">🌍 Dünya Kuboku Seçmə — Asiya</option>
+          <option value="🌍 Dünya Kuboku Seçmə — Amerika">🌍 Dünya Kuboku Seçmə — Amerika</option>
+          <option value="🌍 Dünya Kuboku Seçmə — Afrika">🌍 Dünya Kuboku Seçmə — Afrika</option>
+          <option value="🌍 Millətlər Liqası">🌍 Millətlər Liqası</option>
+          <option value="🌍 EURO 2028 Seçmə">🌍 EURO 2028 Seçmə</option>
+          <option value="🌎 CONMEBOL Copa America">🌎 CONMEBOL Copa America</option>
+          <option value="🌍 Afrika Millətlər Kuboku">🌍 Afrika Millətlər Kuboku</option>
+          <option value="🌏 Asiya Kuboku">🌏 Asiya Kuboku</option>
+          <option value="🌎 CONCACAF Gold Cup">🌎 CONCACAF Gold Cup</option>
+          </optgroup>
+          <optgroup label="── Avropa Liqaları ──">
+          <option value="🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League</option>
+          <option value="🏴󠁧󠁢󠁥󠁮󠁧󠁿 Championship (EFL)">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Championship (EFL)</option>
+          <option value="🏴󠁧󠁢󠁥󠁮󠁧󠁿 League One">🏴󠁧󠁢󠁥󠁮󠁧󠁿 League One</option>
+          <option value="🏴󠁧󠁢󠁥󠁮󠁧󠁿 League Two">🏴󠁧󠁢󠁥󠁮󠁧󠁿 League Two</option>
+          <option value="🇪🇸 La Liga">🇪🇸 La Liga</option>
+          <option value="🇪🇸 La Liga 2">🇪🇸 La Liga 2</option>
+          <option value="🇩🇪 Bundesliga">🇩🇪 Bundesliga</option>
+          <option value="🇩🇪 2. Bundesliga">🇩🇪 2. Bundesliga</option>
+          <option value="🇮🇹 Serie A">🇮🇹 Serie A</option>
+          <option value="🇮🇹 Serie B">🇮🇹 Serie B</option>
+          <option value="🇫🇷 Ligue 1">🇫🇷 Ligue 1</option>
+          <option value="🇫🇷 Ligue 2">🇫🇷 Ligue 2</option>
+          <option value="🇳🇱 Eredivisie">🇳🇱 Eredivisie</option>
+          <option value="🇵🇹 Primeira Liga">🇵🇹 Primeira Liga</option>
+          <option value="🇧🇪 Pro League (Belçika)">🇧🇪 Pro League (Belçika)</option>
+          <option value="🇷🇺 RPL (Rusiya)">🇷🇺 RPL (Rusiya)</option>
+          <option value="🇺🇦 UPL (Ukrayna)">🇺🇦 UPL (Ukrayna)</option>
+          <option value="🇬🇷 Super League (Yunanıstan)">🇬🇷 Super League (Yunanıstan)</option>
+          <option value="🇸🇪 Allsvenskan">🇸🇪 Allsvenskan</option>
+          <option value="🇳🇴 Eliteserien">🇳🇴 Eliteserien</option>
+          <option value="🇩🇰 Superliga (Danimarka)">🇩🇰 Superliga (Danimarka)</option>
+          <option value="🇨🇭 Super League (İsveçrə)">🇨🇭 Super League (İsveçrə)</option>
+          <option value="🇦🇹 Bundesliga (Avstriya)">🇦🇹 Bundesliga (Avstriya)</option>
+          <option value="🇷🇴 Liga I (Rumıniya)">🇷🇴 Liga I (Rumıniya)</option>
+          <option value="🇵🇱 Ekstraklasa (Polşa)">🇵🇱 Ekstraklasa (Polşa)</option>
+          <option value="🇨🇿 Fortuna Liga (Çexiya)">🇨🇿 Fortuna Liga (Çexiya)</option>
+          <option value="🇸🇰 Fortuna Liga (Slovakiya)">🇸🇰 Fortuna Liga (Slovakiya)</option>
+          <option value="🇹🇷 Süper Lig">🇹🇷 Süper Lig</option>
+          <option value="🇦🇿 Premier Liqa">🇦🇿 Premier Liqa</option>
+          <option value="🇬🇪 Erovnuli Liga (Gürcüstan)">🇬🇪 Erovnuli Liga (Gürcüstan)</option>
+          <option value="🇷🇸 SuperLiga (Serbiya)">🇷🇸 SuperLiga (Serbiya)</option>
+          <option value="🇭🇷 HNL (Xorvatiya)">🇭🇷 HNL (Xorvatiya)</option>
+          <option value="🇸🇮 PrvaLiga (Sloveniya)">🇸🇮 PrvaLiga (Sloveniya)</option>
+          <option value="🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scottish Premiership">🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scottish Premiership</option>
+          </optgroup>
+          <optgroup label="── Ölkə Kuboqları ──">
+          <option value="🏴󠁧󠁢󠁥󠁮󠁧󠁿 FA Kuboku">🏴󠁧󠁢󠁥󠁮󠁧󠁿 FA Kuboku</option>
+          <option value="🏴󠁧󠁢󠁥󠁮󠁧󠁿 EFL Kuboku (Carabao)">🏴󠁧󠁢󠁥󠁮󠁧󠁿 EFL Kuboku (Carabao)</option>
+          <option value="🇪🇸 Kopa del Rey">🇪🇸 Kopa del Rey</option>
+          <option value="🇪🇸 Superkopa de España">🇪🇸 Superkopa de España</option>
+          <option value="🇩🇪 DFB Pokal">🇩🇪 DFB Pokal</option>
+          <option value="🇮🇹 Coppa Italia">🇮🇹 Coppa Italia</option>
+          <option value="🇫🇷 Coupe de France">🇫🇷 Coupe de France</option>
+          <option value="🇳🇱 KNVB Beker">🇳🇱 KNVB Beker</option>
+          <option value="🇵🇹 Taça de Portugal">🇵🇹 Taça de Portugal</option>
+          <option value="🇹🇷 Türkiyə Kuboku">🇹🇷 Türkiyə Kuboku</option>
+          <option value="🇦🇿 Azərbaycan Kuboku">🇦🇿 Azərbaycan Kuboku</option>
+          </optgroup>
+          <optgroup label="── Amerika / Asiya / Afrika ──">
+          <option value="🇺🇸 MLS">🇺🇸 MLS</option>
+          <option value="🇧🇷 Brasileirao">🇧🇷 Brasileirao</option>
+          <option value="🇦🇷 Liga Profesional (Argentina)">🇦🇷 Liga Profesional (Argentina)</option>
+          <option value="🌎 Copa Libertadores">🌎 Copa Libertadores</option>
+          <option value="🌎 Copa Sudamericana">🌎 Copa Sudamericana</option>
+          <option value="🇲🇽 Liga MX">🇲🇽 Liga MX</option>
+          <option value="🇯🇵 J-League">🇯🇵 J-League</option>
+          <option value="🇰🇷 K-League">🇰🇷 K-League</option>
+          <option value="🇨🇳 Chinese Super League">🇨🇳 Chinese Super League</option>
+          <option value="🇸🇦 Ərəbistan Pro Liqası">🇸🇦 Ərəbistan Pro Liqası</option>
+          <option value="🇦🇪 UAE Pro League">🇦🇪 UAE Pro League</option>
+          <option value="🇶🇦 Qatar Stars League">🇶🇦 Qatar Stars League</option>
+          <option value="🇮🇷 Persian Gulf Pro League">🇮🇷 Persian Gulf Pro League</option>
+          <option value="🇦🇺 A-League">🇦🇺 A-League</option>
+          <option value="🌍 CAF Champions League">🌍 CAF Champions League</option>
+          <option value="🇳🇬 NPFL (Nigeriya)">🇳🇬 NPFL (Nigeriya)</option>
+          <option value="🇿🇦 PSL (Cənubi Afrika)">🇿🇦 PSL (Cənubi Afrika)</option>
+          </optgroup>
+          <option value="🌐 Digər">🌐 Digər</option>
+        </select>
+      </div>
+      <div class="frow">
+        <div class="fg"><label class="fl">Ev sahibi</label><input class="fi" id="aT1" placeholder="Məs: Man City" autocomplete="off"/></div>
+        <div class="fg"><label class="fl">Qonaq</label><input class="fi" id="aT2" placeholder="Məs: Liverpool" autocomplete="off"/></div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label class="fl">Saat</label><input class="fi" id="aTime" type="time"/></div>
+        <div class="fg">
+          <label class="fl">Status</label>
+          <select class="fs" id="aStatus">
+            <option value="upcoming">⏳ Gələcək</option>
+            <option value="live">🔴 Canlı</option>
+            <option value="finished">✅ Bitib</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg"><label class="fl">Link 1</label><input class="fi" id="aL1" placeholder="https://" autocomplete="off"/></div>
+      <div class="fg"><label class="fl">Link 2</label><input class="fi" id="aL2" placeholder="https://" autocomplete="off"/></div>
+      <div class="fg"><label class="fl">Link 3</label><input class="fi" id="aL3" placeholder="https://" autocomplete="off"/></div>
+      <div class="fg"><label class="fl">Link 4</label><input class="fi" id="aL4" placeholder="https://" autocomplete="off"/></div>
+      <div class="fg"><label class="fl">Link 5</label><input class="fi" id="aL5" placeholder="https://" autocomplete="off"/></div>
+      <div class="fg"><label class="fl">Link 6</label><input class="fi" id="aL6" placeholder="https://" autocomplete="off"/></div>
+      <div class="fg"><label class="fl">Link 7</label><input class="fi" id="aL7" placeholder="https://" autocomplete="off"/></div>
+      <div class="fg"><label class="fl">Link 8</label><input class="fi" id="aL8" placeholder="https://" autocomplete="off"/></div>
+      <div class="fg"><label class="fl">Link 9</label><input class="fi" id="aL9" placeholder="https://" autocomplete="off"/></div>
+      <div class="fg"><label class="fl">Link 10</label><input class="fi" id="aL10" placeholder="https://" autocomplete="off"/></div>
+      <button class="abtn" onclick="addMatch()">+ MATÇ ƏLAVƏ ET</button>
+      <div class="adiv"></div>
+      <div class="asec">Mövcud matçlar</div>
+      <div id="aList"><p style="color:var(--muted);font-size:12px;text-align:center;padding:16px 0">Yüklənir...</p></div>
+      <div class="adiv"></div>
+      <div class="asec">⚠️ Xəbərdarlıq əlavə et</div>
+      <div class="fg">
+        <label class="fl">Növ</label>
+        <select class="fs" id="alType">
+          <option value="warning">⚠️ Xəbərdarlıq</option>
+          <option value="info">ℹ️ Məlumat</option>
+          <option value="danger">🔴 Təcili</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">Başlıq</label><input class="fi" id="alTitle" placeholder="Məs: Texniki iş" autocomplete="off"/></div>
+      <div class="fg"><label class="fl">Mətn</label><textarea class="fi" id="alBody" placeholder="Məs: Bu gün sayt texniki işlər üçün müvəqqəti bağlana bilər." style="height:80px;resize:none;"></textarea></div>
+      <button class="abtn" onclick="addAlert()" style="background:#ff8c00;">+ XƏBƏRDARLıQ ƏLAVƏ ET</button>
+      <div class="adiv"></div>
+      <div class="asec">Mövcud xəbərdarlıqlar</div>
+      <div id="aAlertList"><p style="color:var(--muted);font-size:12px;text-align:center;padding:16px 0">Yüklənir...</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- PAGE OVERLAY -->
+<div class="pageOv" id="quizPage">
+  <div class="pageWrap">
+    <div class="pageTop">
+      <div class="pageTitle">🧠 Quiz</div>
+      <div class="ax" onclick="closePage('quizPage')">✕</div>
+    </div>
+    <div class="pageBody" id="quizBody">
+      <!-- JS ilə doldurulur -->
+    </div>
+  </div>
+</div>
+
+<div class="pageOv" id="aboutPage">
+  <div class="pageWrap">
+    <div class="pageTop">
+      <div class="pageTitle">⚽ Haqqımızda</div>
+      <div class="ax" onclick="closePage('aboutPage')">✕</div>
+    </div>
+    <div class="pageBody">
+      <div class="aboutBadge" style="background:transparent;border:none;"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAH0CAMAAAD8CC+4AAAARVBMVEWr/0Cm+D4AAABDZBmq/j+j9D0ZJgmg7zw8WRZejCOk9j2O1jU/Xxea5zo0TROU3jdBYRiW4TgPFgVLcByL0TRmmSaW4Dh5KpPHAAACsklEQVR42uzRBQHDABAEsN+P2b/bsYFxr4mFFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAECYSf+bad3N+inzQjrSkZ5BOtKRjvQM0pGOdKRnkI50pCM9g3SkIx3pGaQjHelIzyAd6UhHegbpSEc60jNIRzrSkZ5BOtKRjvQM0pGOdKTHkI50pEv/NwvpT5COdKQjPYJ0pCdbrp6x3nzOtp+xq4fNU2pM9v2MQ33O8SSyXCTAAGjXvmoQAAAoBiY4YPqXigU2L82dhf4W0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/QG0REd0RG9QXRER3REbxAd0REd0RtER3RER/Qtoh9PrzhL+bjLYc1VFNERHdERHdERHdHXiI7oiI7oiI7oiM5NdBPFX4guOqIjOqIjOqIjOqLvEB3RER3RER3RER3Rd4iO6IiO6IiO6IiO6DtER3RER3RER3RER/QdoiM6oiM6ogMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMy5A5RmafeD+CGAAAAAAElFTkSuQmCC" style="width:56px;height:56px;border-radius:6px;"/></div>
+      <div class="aboutName">OYUNUN TEMPİ</div>
+      <div class="aboutSub">Futbolu hiss et. Tempi tut.</div>
+      <div class="aboutDivider"></div>
+      <div class="aboutText">
+        "Oyunun Tempi" layihəsi 02.01.2024 tarixində yaradılıb. Başlanğıcda kanal bir dostla birlikdə açılmışdı, lakin layihəni böyütmək qərarı verildikdən sonra kanal 3 AZN qarşılığında tam şəkildə alındı.
+      </div>
+      <div class="aboutText">
+        Bundan sonra kanal "Futbolun Kimyası" adından "Oyunun Tempi" olaraq rebrend edildi. Yeni ad, yeni loqo, yeni yanaşma — amma asan olmadı. Çox sayda admin sınadıq, lakin keyfiyyəti qorumaq üçün əsas yükü həmişə üzərimizə götürdük.
+      </div>
+      <div class="aboutText">
+        Martın 22-də bu işdə ən böyük dəstəyi verən insan layihəyə qoşuldu. Artıq 1 ildir birlikdə işlədiyimiz bu dost, əvvəllər mümkünsüz görünən bir şeyi — sayt qurmağı öyrətdi və bununla da layihəmiz yeni mərhələyə keçdi. Onun gəlişinə qədər 300–400 izləyicisi olan kanalımız qısa müddətdə 1000+ oldu. Ardınca 2000, 3000 və indi isə 4000 hədəfinə doğru irəliləyirik.
+      </div>
+      <div class="aboutText">
+        Biz WhatsApp platformasında ilk futbol kanallarından biri olmuşuq və bu gün də özümüzü ən yaxşı futbol kanallarından biri hesab edirik. Bu yolda çətinliklərimiz çox olub — kontent oğurluqları, mübahisələr, rəqabət... Amma hər dəfə daha güclü çıxmağı bacarmışıq.
+      </div>
+      <div class="aboutText">
+        "Oyunun Tempi"nin hədəfləri böyükdür. Və bu layihəni quran sadəcə bir abituriyent və bir kollec tələbəsidir.
+      </div>
+      <div class="aboutStats">
+        <div class="aboutStat"><div class="aboutStatN">4000+</div><div class="aboutStatL">İzləyici</div></div>
+        <div class="aboutStat"><div class="aboutStatN">1+</div><div class="aboutStatL">İl</div></div>
+        <div class="aboutStat"><div class="aboutStatN">7/24</div><div class="aboutStatL">Canlı</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="pageOv" id="alertsPage">
+  <div class="pageWrap">
+    <div class="pageTop">
+      <div class="pageTitle">🔔 Xəbərdarlıqlar</div>
+      <div class="ax" onclick="closePage('alertsPage')">✕</div>
+    </div>
+    <div class="pageBody" style="padding:0;">
+      <div id="alertsPageList"><div class="noAlerts"><div class="eico">🔔</div><div style="font-size:13px;letter-spacing:1px;">Xəbərdarlıq yoxdur</div></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="pageOv" id="contactPage">
+  <div class="pageWrap">
+    <div class="pageTop">
+      <div class="pageTitle">📩 Əlaqə</div>
+      <div class="ax" onclick="closePage('contactPage')">✕</div>
+    </div>
+    <div class="pageBody">
+      <div class="contactIntro">Sualın, təklifin və ya xətan var? Bizimlə əlaqə saxla.</div>
+      <a class="contactItem" href="https://www.instagram.com/oyununtempi?igsh=MXUxaTRuYjhsNnhrNA==" target="_blank">
+        <div class="contactIcn">📸</div>
+        <div class="contactInfo"><div class="contactTitle">Instagram</div><div class="contactSub">@oyununtempi</div></div>
+        <div class="marr">›</div>
+      </a>
+      <a class="contactItem" href="https://t.me/IstanbulerHerr" target="_blank">
+        <div class="contactIcn">✈️</div>
+        <div class="contactInfo"><div class="contactTitle">Telegram</div><div class="contactSub">@IstanbulerHerr</div></div>
+        <div class="marr">›</div>
+      </a>
+      <a class="contactItem" href="https://whatsapp.com/channel/0029Vb7kqCh9xVJjKHsqBf12" target="_blank">
+        <div class="contactIcn">💬</div>
+        <div class="contactInfo"><div class="contactTitle">WhatsApp</div><div class="contactSub">Canlı yenilik və linklər</div></div>
+        <div class="marr">›</div>
+      </a>
+      <a class="contactItem" href="/cdn-cgi/l/email-protection#0e677d7a6f606c7b626b7c666b7c7c4e69636f6762206d6163">
+        <div class="contactIcn">✉️</div>
+        <div class="contactInfo"><div class="contactTitle">Gmail</div><div class="contactSub"><span class="__cf_email__" data-cfemail="eb82989f8a85899e878e99838e9999ab8c868a8287c5888486">[email&#160;protected]</span></div></div>
+        <div class="marr">›</div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Gizli admin duymesi -->
+<div id="hiddenAdminBtn" style="position:fixed;bottom:0;right:0;width:44px;height:44px;z-index:9999;opacity:0;cursor:default;-webkit-tap-highlight-color:transparent;"></div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script>
+
+const firebaseConfig = {
+  apiKey:            "BURAYA_API_KEY",
+  authDomain:        "BURAYA_AUTH_DOMAIN",
+  projectId:         "BURAYA_PROJECT_ID",
+  storageBucket:     "BURAYA_STORAGE_BUCKET",
+  messagingSenderId: "BURAYA_SENDER_ID",
+  appId:             "BURAYA_APP_ID"
+};
+
+const PIN = "18821902";
+var cdIntervals = {};
+
+// 3 saniyə ərzində Firebase cavab verməsə demoMode
+let firebaseReady = false;
+const fbTimeout = setTimeout(() => {
+  if (!firebaseReady) { console.warn('Firebase timeout  -  demo mode'); demoMode(); }
+}, 3000);
+
+let db, col;
+try {
+  firebase.initializeApp(firebaseConfig);
+  db = firebase.firestore();
+  col = db.collection('matches');
+  col.orderBy('time').onSnapshot(snap => {
+    firebaseReady = true;
+    clearTimeout(fbTimeout);
+    const arr = snap.docs.map(d=>({id:d.id,...d.data()}));
+    render(arr); renderAdmin(arr);
+    if(!alertsCol) initAlerts();
+  }, err => {
+    if (!firebaseReady) { clearTimeout(fbTimeout); demoMode(); }
+  });
+} catch(e) {
+  clearTimeout(fbTimeout);
+  console.warn('Firebase xəta  -  demo mode');
+  demoMode();
+}
+
+// MENU
+let mOpen = false;
+function toggleMenu(){
+  mOpen = !mOpen;
+  document.getElementById('moreMenu').classList.toggle('open', mOpen);
+  document.getElementById('moreBtn').classList.toggle('act', mOpen);
+}
+function closeMenu(){
+  mOpen = false;
+  document.getElementById('moreMenu').classList.remove('open');
+  document.getElementById('moreBtn').classList.remove('act');
+}
+document.getElementById('moreBtn').addEventListener('click', function(e){ e.stopPropagation(); toggleMenu(); });
+document.addEventListener('click', function(e){
+  if (mOpen && !e.target.closest('#moreMenu')) closeMenu();
+});
+
+// HIDDEN ADMIN BUTTON
+let hClicks = 0, hTimer = null;
+document.getElementById('hiddenAdminBtn').addEventListener('click', function(){
+  hClicks++;
+  clearTimeout(hTimer);
+  if (hClicks >= 5) {
+    hClicks = 0;
+    const pinOv = document.getElementById('pinOv');
+    const adminOv = document.getElementById('adminOv');
+    if (!pinOv.classList.contains('act') && !adminOv.classList.contains('act')) {
+      openPin();
+    }
+  } else {
+    hTimer = setTimeout(function(){ hClicks = 0; }, 3000);
+  }
+});
+
+// PIN
+let pin = '';
+function openPin(){ pin=''; updDots(); document.getElementById('pinOv').classList.add('act'); }
+function closePin(){ pin=''; updDots(); document.getElementById('pinOv').classList.remove('act'); }
+function kp(d){ if(pin.length>=8)return; pin+=d; updDots(); if(pin.length===8)setTimeout(chkPin,180); }
+function kdel(){ pin=pin.slice(0,-1); updDots(); }
+function updDots(){
+  for(let i=0;i<8;i++){
+    const el=document.getElementById('pd'+i);
+    el.classList.toggle('f',i<pin.length);
+    el.classList.remove('e');
+  }
+}
+function chkPin(){
+  if(pin===PIN){ closePin(); openAdmin(); }
+  else{
+    for(let i=0;i<8;i++) document.getElementById('pd'+i).classList.add('e');
+    setTimeout(function(){ pin=''; updDots(); showToast('❌ Yanlış şifrə',true); },600);
+  }
+}
+function openAdmin(){ document.getElementById('adminOv').classList.add('act'); }
+function closeAdmin(){ document.getElementById('adminOv').classList.remove('act'); hClicks=0; clearTimeout(hTimer); }
+
+// PAGE NAV
+function openPage(id){ document.getElementById(id).classList.add('act'); if(id==='quizPage') initQuiz(); }
+function closePage(id){ document.getElementById(id).classList.remove('act'); }
+
+function addMatch(){
+  const t1=g('aT1').value.trim(), t2=g('aT2').value.trim(),
+        tm=g('aTime').value, st=g('aStatus').value,
+        l1=g('aL1').value.trim(), l2=g('aL2').value.trim(),
+        l3=g('aL3').value.trim(), l4=g('aL4').value.trim(), l5=g('aL5').value.trim(),
+        l6=g('aL6').value.trim(), l7=g('aL7').value.trim(), l8=g('aL8').value.trim(),
+        l9=g('aL9').value.trim(), l10=g('aL10').value.trim(),
+        lq=g('aLeague').value;
+  if(!t1||!t2||!tm){ showToast('⚠️ Komanda adları və saat mütləqdir',true); return; }
+  col.add({team1:t1,team2:t2,time:tm,status:st,link1:l1||'',link2:l2||'',link3:l3||'',link4:l4||'',link5:l5||'',link6:l6||'',link7:l7||'',link8:l8||'',link9:l9||'',link10:l10||'',league:lq,createdAt:Date.now()})
+    .then(function(){ ['aT1','aT2','aTime','aL1','aL2','aL3','aL4','aL5','aL6','aL7','aL8','aL9','aL10'].forEach(function(id){g(id).value='';}); showToast('✅ Matç əlavə edildi!'); })
+    .catch(function(){ showToast('❌ Xəta baş verdi',true); });
+}
+
+function delMatch(id){
+  if(!confirm('Bu matçı silmək istəyirsiniz?')) return;
+  db.collection('matches').doc(id).delete()
+    .then(function(){ showToast('🗑️ Silindi'); })
+    .catch(function(){ showToast('❌ Silinmədi',true); });
+}
+
+function render(matches){
+  matches = [...matches].sort((a,b)=>{
+    const [ah,am]=(a.time||'99:99').split(':').map(Number);
+    const [bh,bm]=(b.time||'99:99').split(':').map(Number);
+    return (ah*60+am)-(bh*60+bm);
+  });
+  const el = document.getElementById('matchList');
+  const live = matches.filter(m=>m.status==='live');
+  const tb = document.getElementById('tickerBar');
+  if(live.length){
+    tb.style.display='flex';
+    document.getElementById('tickerTxt').textContent = live.map(m=>`${m.team1}  -  ${m.team2}`).join('   ·   ');
+  } else tb.style.display='none';
+
+  if(!matches.length){
+    el.innerHTML=`<div class="empty"><div class="eico">⚽</div><div class="etxt">Bu gün matç yoxdur</div></div>`;
+    return;
+  }
+
+  el.innerHTML = matches.map((m,i) => {
+    const cls = m.status==='live'?'lv':m.status==='finished'?'fn':m.status==='started'?'lv':'up';
+    const pill = m.status==='live'
+      ?'<span class="spill pl">● Canlı</span>'
+      :m.status==='finished'
+      ?'<span class="spill pf">Bitib</span>'
+      :m.status==='started'
+      ?'<span class="spill pl">● Başladı</span>'
+      :'<span class="spill pu">Gələcək</span>';
+    const hasL = m.link1||m.link2||m.link3||m.link4||m.link5||m.link6||m.link7||m.link8||m.link9||m.link10;
+    return `
+    <div class="mc ${cls}" id="mc${i}" style="animation-delay:${i*.05}s">
+      ${m.league?`<div class="clg"><span class="clname">${esc(m.league)}</span></div>`:''}
+      <div class="cmain" onclick="tog('mc${i}')">
+        <div class="tb">
+          <div class="tname">${esc(m.team1)}</div>
+        </div>
+        <div class="vsb">
+          <div class="vst">${esc(m.time)}</div>
+          ${pill}
+        </div>
+        <div class="tb r">
+          <div class="tname">${esc(m.team2)}</div>
+        </div>
+        ${hasL?'<div class="chevr">▼</div>':''}
+      </div>
+      ${m.status==='upcoming'?`<div class="cdown" id="cd${i}"></div>`:''}
+      ${hasL?`<div class="clinks">
+        <div class="lsep"></div>
+        <div class="lbtns-grid">
+        ${[1,2,3,4,5,6,7,8,9,10].filter(n=>m['link'+n]).map(n=>`
+          <a class="lbtn" href="${esc(m['link'+n])}" target="_blank" rel="noopener">
+            <span class="lbtn-icn">📺</span>
+            <span class="lbtn-label">Link ${n}</span>
+            <span class="lbtn-sub">İzlə →</span>
+          </a>`).join('')}
+        </div>
+      </div>`:''}
+    </div>`;
+  }).join('');
+
+  matches.forEach((m,i) => { if(m.status==='upcoming') countdown(m.time,`cd${i}`); });
+}
+
+function renderAdmin(matches){
+  const el=document.getElementById('aList');
+  if(!matches.length){ el.innerHTML='<p style="color:var(--muted);font-size:12px;text-align:center;padding:16px 0">Matç yoxdur</p>'; return; }
+  el.innerHTML=matches.map(m=>`
+    <div class="ami" style="flex-wrap:wrap;">
+      <div class="aminfo" style="flex:1;min-width:0;">
+        <div class="amname">${esc(m.team1)}  -  ${esc(m.team2)}</div>
+        <div class="ammeta">${esc(m.time)} · ${esc(m.league||'')} · ${slbl(m.status)}</div>
+      </div>
+      <div style="display:flex;gap:6px;flex-shrink:0;">
+        <div class="aedit" onclick="toggleEdit('ef_${m.id}')">✏️</div>
+        <div class="adel" onclick="delMatch('${m.id}')">🗑</div>
+      </div>
+      <div class="aeditform" id="ef_${m.id}" style="width:100%;flex-basis:100%;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+          <div><label class="fl">Ev sahibi</label><input class="fi" id="et1_${m.id}" value="${esc(m.team1)}"/></div>
+          <div><label class="fl">Qonaq</label><input class="fi" id="et2_${m.id}" value="${esc(m.team2)}"/></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+          <div><label class="fl">Saat</label><input class="fi" type="time" id="etm_${m.id}" value="${esc(m.time)}"/></div>
+          <div><label class="fl">Status</label>
+            <select class="fs" id="est_${m.id}">
+              <option value="upcoming" ${m.status==='upcoming'?'selected':''}>⏳ Gələcək</option>
+              <option value="live" ${m.status==='live'?'selected':''}>🔴 Canlı</option>
+              <option value="finished" ${m.status==='finished'?'selected':''}>✅ Bitib</option>
+            </select>
+          </div>
+        </div>
+        ${[1,2,3,4,5,6,7,8,9,10].map(n=>`<div style="margin-bottom:6px;"><label class="fl">Link ${n}</label><input class="fi" id="el${n}_${m.id}" value="${esc(m['link'+n]||'')}" placeholder="https://"/></div>`).join('')}
+        <button class="esbtn" onclick="saveEdit('${m.id}')">✓ YADDA SAXLA</button>
+      </div>
+    </div>`).join('');
+}
+
+function toggleEdit(id){
+  var el = document.getElementById(id);
+  if(el) el.classList.toggle('open');
+}
+
+function saveEdit(id){
+  var t1 = document.getElementById('et1_'+id).value.trim();
+  var t2 = document.getElementById('et2_'+id).value.trim();
+  var tm = document.getElementById('etm_'+id).value;
+  var st = document.getElementById('est_'+id).value;
+  if(!t1||!t2||!tm){ showToast('⚠️ Boş qoymayın',true); return; }
+  var links = {};
+  for(var n=1;n<=10;n++){
+    var el = document.getElementById('el'+n+'_'+id);
+    links['link'+n] = el ? el.value.trim() : '';
+  }
+  db.collection('matches').doc(id).update(Object.assign({team1:t1,team2:t2,time:tm,status:st},links))
+    .then(function(){ showToast('✅ Yadda saxlandı!'); document.getElementById('ef_'+id).classList.remove('open'); })
+    .catch(function(e){ showToast('❌ Xəta',true); console.error(e); });
+}
+
+function demoMode(){
+  const d=[
+    {id:'d1',team1:'Man City',team2:'Liverpool',time:'15:45',status:'finished',league:'🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League',link1:'#',link2:'#'},
+    {id:'d2',team1:'Freiburg',team2:'Bayern',time:'17:30',status:'live',league:'🇩🇪 Bundesliga',link1:'#',link2:'#'},
+    {id:'d3',team1:'Mallorca',team2:'Real Madrid',time:'18:15',status:'upcoming',league:'🇪🇸 La Liga',link1:'#',link2:''},
+    {id:'d4',team1:'Trabzonspor',team2:'Galatasaray',time:'21:00',status:'upcoming',league:'🇹🇷 Süper Lig',link1:'#',link2:'#'},
+    {id:'d5',team1:'Atletico',team2:'Barcelona',time:'23:00',status:'upcoming',league:'🇪🇸 La Liga',link1:'#',link2:''},
+  ];
+  render(d); renderAdmin(d);
+  // Alerts demo mode - empty
+  renderHomeAlerts(); renderAlertsPage(); renderAdminAlerts(); updateAlertBadge();
+}
+
+window.tog = id => {
+  const c=document.getElementById(id);
+  if(c&&c.querySelector('.clinks')) c.classList.toggle('open');
+};
+
+function countdown(ts,elId){
+  if(cdIntervals[elId]){ clearInterval(cdIntervals[elId]); delete cdIntervals[elId]; }
+  function markStarted(el){
+    el.style.display='none';
+    clearInterval(cdIntervals[elId]);
+    const mc=el.closest('.mc');
+    if(mc){
+      mc.classList.remove('up'); mc.classList.add('lv');
+      const pill=mc.querySelector('.spill');
+      if(pill){ pill.innerHTML='● Başladı'; pill.className='spill pl'; }
+    }
+  }
+  function tick(){
+    const el=document.getElementById(elId); if(!el){ clearInterval(cdIntervals[elId]); return; }
+    const now=new Date();
+    const parts=ts.split(':').map(Number);
+    const h=parts[0]||0, m=parts[1]||0;
+    const t=new Date(now.getFullYear(),now.getMonth(),now.getDate(),h,m,0,0);
+    const d=t-now;
+    if(d<=0){ markStarted(el); return; }
+    const hrs=Math.floor(d/3600000);
+    const min=Math.floor((d%3600000)/60000);
+    const sec=Math.floor((d%60000)/1000);
+    const parts2=[];
+    if(hrs>0) parts2.push(hrs+'s');
+    parts2.push(min+'d');
+    parts2.push(sec+'s');
+    el.textContent=parts2.join(' ')+' sonra başlayır';
+  }
+  tick();
+  cdIntervals[elId]=setInterval(tick,1000);
+}
+
+function esc(s){ if(!s)return''; return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function g(id){ return document.getElementById(id); }
+function slbl(s){ return s==='live'?'🔴 Canlı':s==='finished'?'✅ Bitib':'⏳ Gələcək'; }
+// QUIZ
+const quizData = [
+  {q:"Dünya Kuboku neçə ildə bir keçirilir?", opts:["2 ildə bir","4 ildə bir","3 ildə bir","5 ildə bir"], ans:1},
+  {q:"Ən çox Dünya Kuboku qazanan ölkə hansıdır?", opts:["Almaniya","Argentina","Braziliya","Fransa"], ans:2},
+  {q:"UEFA Çempionlar Liqasında ən çox qol vuran oyunçu kimdir?", opts:["Messi","Ronaldo","Raul","Benzema"], ans:1},
+  {q:"FIFA-nın qərargahı hansı şəhərdədir?", opts:["Brüssel","Cenevrə","Paris","Zürih"], ans:3},
+  {q:"Futbolda bir komandada neçə oyunçu olur?", opts:["10","11","12","9"], ans:1},
+  {q:"Penalti zərbəsi qapıdan neçə metr məsafədən vurulur?", opts:["10m","11m","12m","9m"], ans:1},
+  {q:"El Clasico hansı iki komanda arasında oynanır?", opts:["Atletico-Barca","Real-Atletico","Real-Barca","Barca-Sevilla"], ans:2},
+  {q:"Messi hansı ölkənin vətəndaşıdır?", opts:["Braziliya","Uruguay","Argentina","İspaniya"], ans:2},
+  {q:"Premier Liqada ən çox çempionluq qazanan klub hansıdır?", opts:["Arsenal","Chelsea","Liverpool","Manchester United"], ans:3},
+  {q:"Offside qaydası nə vaxt tətbiq edilmir?", opts:["Künc zərbəsindən","Penaltidə","Azad zərbədə","Throw-in-dən"], ans:3},
+  {q:"2022 Dünya Kubokunu kim qazandı?", opts:["Fransa","Braziliya","Argentina","Xorvatiya"], ans:2},
+  {q:"Ronaldo hansı klubda karyerasına başlayıb?", opts:["Manchester United","Sporting Lisbon","Real Madrid","Juventus"], ans:1},
+  {q:"UEFA Çempionlar Liqasında ən çox çempionluq qazanan klub?", opts:["Barcelona","Bayern","AC Milan","Real Madrid"], ans:3},
+  {q:"Pele neçə Dünya Kuboku qazanıb?", opts:["1","2","3","4"], ans:2},
+  {q:"Hansı ölkə 2018 Dünya Kubokunu qazandı?", opts:["Braziliya","Fransa","Almaniya","Belçika"], ans:1},
+  {q:"Premier Liqa neçə komandadan ibarətdir?", opts:["16","18","20","22"], ans:2},
+  {q:"Ballon d'Or-u ən çox qazanan oyunçu kimdir?", opts:["Ronaldo","Messi","Ronaldinho","Zidane"], ans:1},
+  {q:"Hansı komanda 2020-21 UEFA Çempionlar Liqasını qazandı?", opts:["PSG","Manchester City","Chelsea","Bayern"], ans:2},
+  {q:"Serie A-da ən çox çempionluq qazanan klub?", opts:["AC Milan","Inter","Roma","Juventus"], ans:3},
+  {q:"Hansı oyunçu 2022 DK-da qızıl top qazandı?", opts:["Mbappe","Modric","Messi","De Bruyne"], ans:2},
+  {q:"Azərbaycan millisinin baş məşqçisi kim olub (2024)?", opts:["Gianni De Biasi","Fernando Santos","Slavko Vincic","Emin Musayev"], ans:1},
+  {q:"La Liga-da ən çox qol vuran oyunçu kimdir (tarix boyu)?", opts:["Messi","Ronaldo","Raul","Benzema"], ans:0},
+  {q:"2010 Dünya Kubokunu kim qazandı?", opts:["Braziliya","Hollandiya","İspaniya","Almaniya"], ans:2},
+  {q:"Hansı klub 2023 UEFA Çempionlar Liqasını qazandı?", opts:["Real Madrid","Manchester City","Inter","Bayern"], ans:1},
+  {q:"Futbol tarixinin ən bahalı transferi hansıdır?", opts:["Neymar PSG-yə","Mbappe Real-a","Ronaldo Juventus-a","Griezmann Barca-ya"], ans:0},
+  {q:"İngiltərə Premyer Liqa neçə-ci ildə yaradılıb?", opts:["1888","1992","1900","1960"], ans:1},
+  {q:"Hansı oyunçunun ləqəbi Il Fenomeno-dur?", opts:["Ronaldinho","Ronaldo R9","Roberto Carlos","Kaka"], ans:1},
+  {q:"2014 Dünya Kuboku finalında kim kimi məğlub etdi?", opts:["Braziliya-Hollandiya","Almaniya-Argentina","İspaniya-Braziliya","Fransa-Xorvatiya"], ans:1},
+  {q:"Bundesliga-da ən çox çempionluq qazanan klub?", opts:["Borussia Dortmund","Bayer Leverkusen","Werder Bremen","Bayern München"], ans:3},
+  {q:"UEFA-nın qərargahı hansı şəhərdədir?", opts:["Paris","Brüssel","Nyon","Zürih"], ans:2},
+  {q:"Hansı oyunçu 2006 DK finalında baş vurmaqla məşhurlaşdı?", opts:["Ronaldo","Henry","Zidane","Totti"], ans:2},
+  {q:"Liqalar Kuboku hansı ölkəyə aiddir?", opts:["İspaniya","Fransa","İngiltərə","İtaliya"], ans:2},
+  {q:"Hansı komanda 2019 UEFA Çempionlar Liqasını qazandı?", opts:["Manchester City","Ajax","Tottenham","Liverpool"], ans:3},
+  {q:"Pele neçə beynəlxalq qol vurub?", opts:["57","77","95","77"], ans:1},
+  {q:"Hansı ölkə ilk Dünya Kubokunu qazanıb (1930)?", opts:["Braziliya","Argentina","Uruqvay","İtaliya"], ans:2},
+  {q:"Futbolda oyunun standart müddəti neçə dəqiqədir?", opts:["80","90","100","85"], ans:1},
+  {q:"Hansı oyunçu Manchester United-dən Real Madrid-ə 2009-da köçdü?", opts:["Rooney","Tevez","Ronaldo","Giggs"], ans:2},
+  {q:"Hansı ölkə ən çox Dünya Kuboku ev sahibliyi etmişdir?", opts:["Braziliya","Almaniya","Meksika","İtaliya"], ans:2},
+  {q:"İspaniya milli komandası kaç DK qazanıb?", opts:["1","2","3","4"], ans:0},
+  {q:"Ronaldinho hansı klubda ən parlaq dövründə idi?", opts:["PSG","AC Milan","Barcelona","Atletico Mineiro"], ans:2},
+  {q:"Hansı oyunçunun ləqəbi O Rei-dir?", opts:["Ronaldo","Messi","Pele","Maradona"], ans:2},
+  {q:"2016 EURO çempionu kimdir?", opts:["Fransa","İspaniya","Portuqaliya","Almaniya"], ans:2},
+  {q:"Premier Liqanın ən çox qol vuran oyunçusu kimdir?", opts:["Wayne Rooney","Alan Shearer","Andrew Cole","Frank Lampard"], ans:1},
+  {q:"Hansı klub Çempionlar Liqasını üst-üstə 3 dəfə qazanıb (2016-18)?", opts:["Barcelona","Bayern","Atletico","Real Madrid"], ans:3},
+  {q:"Hansı turnir hər 4 ildə bir Cənubi Amerikada keçirilir?", opts:["CONCACAF","Afrika Kuboku","Copa America","Gold Cup"], ans:2},
+  {q:"2024 EURO-nu kim qazandı?", opts:["İspaniya","Almaniya","Fransa","Portuqaliya"], ans:0},
+  {q:"Hansı oyunçu 2023 Ballon d'Or-u qazandı?", opts:["Haaland","Vinicius Jr","Mbappe","Messi"], ans:3},
+  {q:"Luka Modric hansı ölkəni təmsil edir?", opts:["Serbiya","Sloveniya","Xorvatiya","Bosniya"], ans:2},
+  {q:"Hansı klub 2022-23 mövsümündə Premier Liqanı qazandı?", opts:["Arsenal","Liverpool","Chelsea","Manchester City"], ans:3},
+  {q:"Erling Haaland hansı ölkəni təmsil edir?", opts:["Danimarka","İsveç","Norveç","Finlandiya"], ans:2},
+  {q:"Hansı stadion dünyanın ən böyük futbol stadionudur?", opts:["Camp Nou","Wembley","Maracana","Rungrado"], ans:3},
+  {q:"Maradona 1986 DK-da hansı komandaya qarşı Tanrının əli qolunu vurdu?", opts:["Braziliya","Belçika","İngiltərə","Almaniya"], ans:2},
+  {q:"Hansı oyunçu 2018 DK-da qızıl top qazandı?", opts:["Messi","Griezmann","Mbappe","Modric"], ans:3},
+  {q:"Juventus hansı şəhərdə yerləşir?", opts:["Milan","Roma","Napoli","Turin"], ans:3},
+  {q:"Hansı oyunçu Manchester City-yə 2022-də qoşuldu?", opts:["Salah","Lewandowski","Haaland","Kane"], ans:2},
+  {q:"Hansı ölkə 4 Dünya Kuboku qazanıb?", opts:["Almaniya","Argentina","Fransa","İtaliya"], ans:3},
+  {q:"Messi ilk Dünya Kubokunu neçə yaşında qazandı?", opts:["33","35","31","37"], ans:1},
+  {q:"Hansı klub Şotlandiya Premyer Liqasında ən uğurludur?", opts:["Aberdeen","Hearts","Rangers","Celtic"], ans:3},
+  {q:"Futbolda sarı kartdan sonra oyunçu nə alırsa meydandan çıxarılır?", opts:["3-cü sarı","İkinci sarı","Birbaşa qırmızı","Hər ikisi"], ans:1},
+  {q:"Hansı oyunçunun ləqəbi La Pulga-dır?", opts:["Neymar","Mbappe","Messi","Suarez"], ans:2},
+  {q:"2002 Dünya Kubokunu kim qazandı?", opts:["Almaniya","Braziliya","Cənubi Koreya","Türkiyə"], ans:1},
+  {q:"Hansı ölkənin milli komandası Les Bleus adlanır?", opts:["Belçika","Portuqaliya","İspaniya","Fransa"], ans:3},
+  {q:"Kylian Mbappe neçənci ildə dünyaya gəlib?", opts:["1996","1998","2000","1997"], ans:1},
+  {q:"Hansı turnir hər il Avropa klubları arasında keçirilir (ikinci dərəcəli)?", opts:["UEFA Konfrans Liqası","UEFA Kubu","UEFA Avropa Liqası","Super Kup"], ans:2},
+  {q:"Hansı oyunçu tarix boyu ən çox beynəlxalq qol vurub?", opts:["Messi","Ronaldo CR7","Pele","Puskas"], ans:1},
+  {q:"Hansı komanda 2021 Copa America-nı qazandı?", opts:["Braziliya","Uruqvay","Kolumbiya","Argentina"], ans:3},
+  {q:"Xavi Hernandez hansı klubun baş məşqçisi olub?", opts:["Real Madrid","Barcelona","Atletico","Valencia"], ans:1},
+  {q:"Hansı oyunçunun ləqəbi The Special One deyil, futbolda başqa ləqəbi var?", opts:["Mourinho","Ferguson","Wenger","Ancelotti"], ans:2},
+  {q:"Hansı Asiya ölkəsi 2002 DK-da yarımfinala çıxdı?", opts:["Yaponiya","Çin","Cənubi Koreya","İran"], ans:2},
+  {q:"Hansı oyunçu 2021 Ballon d'Or-u qazandı?", opts:["Ronaldo","Salah","Messi","Lewandowski"], ans:2},
+  {q:"Premier Liqada ən çox çempionluq qazanan məşqçi kimdir?", opts:["Pep Guardiola","Jose Mourinho","Arsene Wenger","Alex Ferguson"], ans:3},
+  {q:"Hansı ölkənin liqası Süper Lig adlanır?", opts:["Yunanıstan","Hollandiya","Türkiyə","Rusiya"], ans:2},
+  {q:"Zinedine Zidane hansı ölkəni təmsil etmişdir?", opts:["Əlcəzair","Tunis","Fransa","Belçika"], ans:2},
+  {q:"Hansı komanda 2024 UEFA Çempionlar Liqasını qazandı?", opts:["Bayern","Arsenal","PSG","Real Madrid"], ans:3},
+  {q:"Hansı oyunçu Arsenal-da ən çox qol vurub?", opts:["Dennis Bergkamp","Thierry Henry","Ian Wright","Robin van Persie"], ans:1},
+  {q:"Neymar hansı ölkənin millisindədir?", opts:["Argentina","Kolumbiya","Braziliya","Uruqvay"], ans:2},
+  {q:"Hansı turnir Afrika ölkələri arasında keçirilir?", opts:["Copa Libertadores","CONCACAF","Afrika Millətlər Kuboku","Gold Cup"], ans:2},
+  {q:"Hansı oyunçu 2014 DK-da qızıl top qazandı?", opts:["Neymar","Mueller","Messi","Robben"], ans:2},
+  {q:"Hansı klub Çempionlar Liqasını 6 dəfə qazanıb?", opts:["Barcelona","AC Milan","Bayern","Liverpool"], ans:1},
+  {q:"Futbolda künc zərbəsi haradan vurulur?", opts:["Qapı xəttindən","Meydanın ortasından","Bayraq nöqtəsindən","Penalti nöqtəsindən"], ans:2},
+  {q:"Cristiano Ronaldo doğma adası hansıdır?", opts:["Lizbon","Madeira","Azor","Porto"], ans:1},
+  {q:"Hansı oyunçu Liverpool-da 2019 Çempionlar Liqası qalibiyyətinə önəmli töhfə verdi?", opts:["Salah","Van Dijk","Mane","Firmino"], ans:1},
+  {q:"Hansı ölkənin liqası Primeira Liga adlanır?", opts:["İspaniya","Portuqaliya","Braziliya","İtaliya"], ans:1},
+  {q:"2006 DK-da ən çox qol vuran oyunçu kimdir?", opts:["Ronaldo","Zidane","Klose","Rooney"], ans:2},
+  {q:"Hansı klub İspaniya kubokunu Copa del Rey adlandırır?", opts:["Düzdür, bu İspaniya kubokudur","Yanlışdır","Yalnız Real üçün","Yalnız Barca üçün"], ans:0},
+  {q:"Kevin De Bruyne hansı ölkəni təmsil edir?", opts:["Hollandiya","Fransa","Belçika","Almaniya"], ans:2},
+  {q:"Hansı oyunçu 2010 DK-da qızıl top qazandı?", opts:["Villa","Sneijder","Forlan","Messi"], ans:2},
+  {q:"Hansı turnir CONMEBOL tərəfindən keçirilir?", opts:["Copa America","Gold Cup","Afrika Kuboku","EURO"], ans:0},
+  {q:"Harry Kane hansı milli komandada oynayır?", opts:["Şotlandiya","Uels","İrlandiya","İngiltərə"], ans:3},
+  {q:"Hansı klub 2023 UEFA Avropa Liqasını qazandı?", opts:["Arsenal","Roma","Sevilla","Bayer Leverkusen"], ans:2},
+  {q:"Xabi Alonso hansı klubun baş məşqçisidir (2024)?", opts:["Real Madrid","Liverpool","Bayern","Bayer Leverkusen"], ans:3},
+  {q:"Bukayo Saka hansı klubda oynayır?", opts:["Chelsea","Manchester United","Tottenham","Arsenal"], ans:3},
+  {q:"Ronaldo R9 hansı ölkənin millisindədir?", opts:["Argentina","Portuqaliya","Braziliya","İspaniya"], ans:2},
+  {q:"Hansı stadion Real Madrid-in ev meydanıdır?", opts:["Wanda Metropolitano","Camp Nou","Vicente Calderon","Santiago Bernabeu"], ans:3},
+  {q:"2026 Dünya Kuboku harada keçiriləcək?", opts:["Braziliya","ABŞ/Kanada/Meksika","Çin","Səudiyyə Ərəbistanı"], ans:1},
+  {q:"Hansı oyunçu Atletico Madrid-in tarixinin ən bahalı transferidir?", opts:["Griezmann","Joao Felix","Falcao","Costa"], ans:1},
+  {q:"Hansı ölkənin milli komandası Oranje adlanır?", opts:["Belçika","Almaniya","Hollandiya","Danimarka"], ans:2},
+  {q:"Hansı oyunçu PSG-dən Real Madrid-ə 2024-də köçdü?", opts:["Neymar","Messi","Mbappe","Hakimi"], ans:2},
+  {q:"Hansı ölkə 1966 Dünya Kubokunu qazandı?", opts:["Braziliya","Almaniya","İngiltərə","İtaliya"], ans:2},
+  {q:"Roberto Firmino hansı ölkəni təmsil edir?", opts:["Argentina","Kolumbiya","Braziliya","Çili"], ans:2},
+  {q:"Hansı oyunçu Barcelona-dan 2021-də ayrıldı (maliyyə böhranı səbəbindən)?", opts:["Suarez","Pique","Messi","Alba"], ans:2},
+  {q:"Hansı klub 5 dəfə Avropa Kuboku/Çempionlar Liqası qazanıb (Milan)?", opts:["AC Milan","Inter Milan","Juventus","Roma"], ans:0},
+  {q:"Sadio Mane hansı ölkəni təmsil edir?", opts:["Qana","Kot-d'İvuar","Nigeriya","Seneqal"], ans:3},
+  {q:"Hansı oyunçunun ləqəbi El Pibe de Oro-dur?", opts:["Messi","Pele","Maradona","Di Stefano"], ans:2},
+  {q:"2008 EURO çempionu kimdir?", opts:["Almaniya","Portuqaliya","İtaliya","İspaniya"], ans:3},
+  {q:"Mohamed Salah hansı ölkəni təmsil edir?", opts:["Mərakeş","Liviya","Tunis","Misir"], ans:3},
+  {q:"Hansı oyunçu 2004 EURO-da ən yaxşı oyunçu seçildi?", opts:["Figo","Ronaldo","Deco","Maniche"], ans:1},
+  {q:"Hansı komanda 2022 Copa America finalında qalib gəldi?", opts:["Braziliya","Kolumbiya","Uruqvay","Argentina"], ans:3},
+  {q:"Virgil van Dijk hansı ölkəni təmsil edir?", opts:["Belçika","Danimarka","Hollandiya","İsveçrə"], ans:2},
+  {q:"Hansı klub Ligue 1-də ən çox çempionluq qazanıb?", opts:["Marseille","Lyon","Monaco","Paris Saint-Germain"], ans:3},
+  {q:"Futbolda oyuna giren son əvəzetmə oyunçusunun rolu nədir?", opts:["Əsas oyunçu","Əvəzetmə","Kapitan","Qapıçı"], ans:1},
+  {q:"Hansı ölkənin liqası Eredivisie adlanır?", opts:["Belçika","Avstriya","İsveçrə","Hollandiya"], ans:3},
+  {q:"Robert Lewandowski hansı ölkəni təmsil edir?", opts:["Çexiya","Slovakiya","Macarıstan","Polşa"], ans:3},
+  {q:"Hansı oyunçu 2022-23 mövsümündə Premier Liqada ən çox qol vurdu?", opts:["Salah","Kane","Haaland","Son"], ans:2},
+  {q:"Hansı komanda 2016 UEFA Çempionlar Liqasını qazandı?", opts:["Atletico Madrid","Bayern","PSG","Real Madrid"], ans:3},
+  {q:"Son Heung-min hansı ölkəni təmsil edir?", opts:["Çin","Yaponiya","Cənubi Koreya","Tailand"], ans:2},
+  {q:"Hansı oyunçu 2019 Ballon d'Or-u qazandı?", opts:["Van Dijk","Ronaldo","Salah","Messi"], ans:3},
+  {q:"Hansı klub 2017 UEFA Çempionlar Liqasını qazandı?", opts:["Atletico","Juventus","Bayern","Real Madrid"], ans:3},
+  {q:"Futbolda qapıçı öz cərimə sahəsindən kənarda əllərini işlədə bilərmi?", opts:["Bəli","Xeyr","Yalnız penaltidə","Yalnız azad zərbədə"], ans:1},
+  {q:"Hansı ölkə 1958 Dünya Kubokunu qazandı?", opts:["Braziliya","İspaniya","Fransa","Almaniya"], ans:0},
+  {q:"Thiago Silva hansı ölkəni təmsil edir?", opts:["Argentina","Portuqaliya","Braziliya","Kolumbiya"], ans:2},
+  {q:"Hansı klub 2018 UEFA Çempionlar Liqasını qazandı?", opts:["Barcelona","Bayern","Juventus","Real Madrid"], ans:3},
+  {q:"Hansı oyunçu Arsenal-da 49 oyunluq məğlubiyyətsiz seriyada kapitan idi?", opts:["Bergkamp","Henry","Vieira","Pires"], ans:2},
+  {q:"Hansı komanda 2012 EURO-nu qazandı?", opts:["Almaniya","Fransa","Portuqaliya","İspaniya"], ans:3},
+  {q:"Gareth Bale hansı ölkəni təmsil edir?", opts:["İrlandiya","Şotlandiya","İngiltərə","Uels"], ans:3},
+  {q:"Hansı oyunçu Çempionlar Liqasında bir mövsümdə ən çox qol vurub?", opts:["Messi","Lewandowski","Ronaldo","Benzema"], ans:2},
+  {q:"Hansı klub 2014 UEFA Çempionlar Liqasını qazandı?", opts:["Atletico Madrid","Bayern","Barcelona","Real Madrid"], ans:3},
+  {q:"Riyad Mahrez hansı ölkəni təmsil edir?", opts:["Tunis","Mərakeş","Əlcəzair","Misir"], ans:2},
+  {q:"Hansı oyunçu 2016 Ballon d'Or-u qazandı?", opts:["Messi","Griezmann","Suarez","Ronaldo"], ans:3},
+  {q:"İkinci Dünya Müharibəsindən əvvəl neçə Dünya Kuboku keçirilib?", opts:["1","2","3","4"], ans:2},
+  {q:"Hansı şəhərdə 2021 EURO finalı keçirildi?", opts:["Roma","Madrid","Münhen","London"], ans:3},
+  {q:"Paulo Dybala hansı ölkəni təmsil edir?", opts:["Braziliya","Çili","Uruqvay","Argentina"], ans:3},
+  {q:"Hansı oyunçu 2015 Ballon d'Or-u qazandı?", opts:["Ronaldo","Neymar","Suarez","Messi"], ans:3},
+  {q:"Hansı klub 2013 UEFA Çempionlar Liqasını qazandı?", opts:["Real Madrid","Barcelona","Dortmund","Bayern München"], ans:3},
+  {q:"Futbolda azad zərbə zamanı divar neçə metr məsafədə durmalıdır?", opts:["7.32m","9.15m","11m","10m"], ans:1},
+  {q:"Bernardo Silva hansı ölkəni təmsil edir?", opts:["Braziliya","İspaniya","Portuqaliya","Fransa"], ans:2},
+  {q:"Hansı oyunçu 2009 Ballon d'Or-u qazandı?", opts:["Ronaldo","Torres","Iniesta","Messi"], ans:3},
+  {q:"Hansı komanda 2020 UEFA Çempionlar Liqasını qazandı?", opts:["PSG","Lyon","Atletico","Bayern München"], ans:3},
+  {q:"Karim Benzema hansı ölkəni təmsil edir?", opts:["Əlcəzair","Tunis","Fransa","Mərakeş"], ans:2},
+  {q:"Hansı oyunçu 2022 DK-da ən çox qol vurdu?", opts:["Messi","Mbappe","Giroud","Alvarez"], ans:1},
+];
+let qIdx=0, qScore=0, qAnswered=false;
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]; } return a; }
+let shuffledQuiz=[];
+function initQuiz(){ shuffledQuiz=shuffle([...quizData]).slice(0,20); qIdx=0; qScore=0; renderQ(); }
+function renderQ(){
+  const el=document.getElementById('quizBody'); if(!el)return;
+  if(qIdx>=shuffledQuiz.length){ el.innerHTML=`<div class="qscore"><div class="qscoreN">${qScore}/${shuffledQuiz.length}</div><div class="qscoreL">Nəticən</div></div><button class="qnextBtn" onclick="initQuiz()">YENİDƏN OYNA</button>`; return; }
+  const d=shuffledQuiz[qIdx]; qAnswered=false;
+  el.innerHTML=`<div class="qcard"><div class="qnum">SUAL ${qIdx+1} / ${shuffledQuiz.length}</div><div class="qtext">${d.q}</div><div class="qopts">${d.opts.map((o,i)=>`<button class="qopt" onclick="ansQ(${i})">${o}</button>`).join('')}</div><div class="qresult" id="qres"></div></div>${qIdx>0?`<div style="text-align:center;font-size:12px;color:var(--muted2);padding-top:4px">Xal: ${qScore}</div>`:"" }`;
+}
+window.ansQ = i => {
+  if(qAnswered)return; qAnswered=true;
+  const d=shuffledQuiz[qIdx];
+  const opts=document.querySelectorAll('.qopt');
+  opts.forEach((o,idx)=>{ if(idx===d.ans)o.classList.add('correct'); else if(idx===i)o.classList.add('wrong'); o.disabled=true; });
+  if(i===d.ans) qScore++;
+  const res=document.getElementById('qres');
+  res.textContent=i===d.ans?"✅ Düzdür!":"❌ Yanlış!";
+  res.style.color=i===d.ans?"var(--lime)":"var(--red)";
+  res.style.fontWeight="600";
+  const btn=document.createElement('button');
+  btn.className='qnextBtn'; btn.textContent=qIdx+1<shuffledQuiz.length?"NÖVBƏTİ SUAL →":"NƏTİCƏYƏ BAX";
+  btn.onclick=()=>{ qIdx++; renderQ(); };
+  document.querySelector('.qcard').appendChild(btn);
+};
+
+
+// ── ALERTS ──────────────────────────────────────────
+var alertsCol;
+var allAlerts = [];
+
+function initAlerts(){
+  if(!db) return;
+  alertsCol = db.collection('alerts');
+  alertsCol.orderBy('createdAt','desc').onSnapshot(function(snap){
+    allAlerts = snap.docs.map(function(d){ return Object.assign({id:d.id}, d.data()); });
+    renderHomeAlerts();
+    renderAlertsPage();
+    renderAdminAlerts();
+    updateAlertBadge();
+  }, function(){ });
+}
+
+function alertTypeIcon(t){
+  return t==='info' ? 'ℹ️' : t==='danger' ? '🔴' : '⚠️';
+}
+
+function alertTypeLabel(t){
+  return t==='info' ? 'Məlumat' : t==='danger' ? 'Təcili' : 'Xəbərdarlıq';
+}
+
+function fmtTime(ts){
+  if(!ts) return '';
+  var d = new Date(ts);
+  return d.getDate()+'.'+(d.getMonth()+1)+'.'+d.getFullYear()+' '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);
+}
+
+function renderHomeAlerts(){
+  var el = document.getElementById('homeAlerts');
+  if(!el) return;
+  if(!allAlerts.length){ el.innerHTML=''; return; }
+  el.innerHTML = '<div style="height:12px;"></div>' + allAlerts.slice(0,3).map(function(a){
+    return '<div class="alertCard '+a.type+'">'+
+      '<div class="alertTop"><span class="alertIcon">'+alertTypeIcon(a.type)+'</span><span class="alertTitle">'+esc(a.title)+'</span></div>'+
+      '<div class="alertBody">'+esc(a.body)+'</div>'+
+      '<div class="alertTime">'+fmtTime(a.createdAt)+'</div>'+
+    '</div>';
+  }).join('');
+}
+
+function renderAlertsPage(){
+  var el = document.getElementById('alertsPageList');
+  if(!el) return;
+  if(!allAlerts.length){
+    el.innerHTML = '<div class="noAlerts"><div class="eico">🔔</div><div style="font-size:13px;letter-spacing:1px;">Xəbərdarlıq yoxdur</div></div>';
+    return;
+  }
+  el.innerHTML = allAlerts.map(function(a){
+    return '<div class="alertPageItem '+a.type+'">'+
+      '<div class="alertPageTop">'+
+        '<div class="alertPageIcon">'+alertTypeIcon(a.type)+'</div>'+
+        '<div class="alertPageTitle">'+esc(a.title)+'</div>'+
+      '</div>'+
+      '<div class="alertPageBody">'+esc(a.body)+'</div>'+
+      '<div class="alertPageTime">'+fmtTime(a.createdAt)+'</div>'+
+    '</div>';
+  }).join('');
+}
+
+function renderAdminAlerts(){
+  var el = document.getElementById('aAlertList');
+  if(!el) return;
+  if(!allAlerts.length){
+    el.innerHTML='<p style="color:var(--muted);font-size:12px;text-align:center;padding:16px 0">Xəbərdarlıq yoxdur</p>';
+    return;
+  }
+  el.innerHTML = allAlerts.map(function(a){
+    return '<div class="ami" style="flex-wrap:wrap;">'+
+      '<div class="aminfo" style="flex:1;min-width:0;">'+
+        '<div class="amname">'+alertTypeIcon(a.type)+' '+esc(a.title)+'</div>'+
+        '<div class="ammeta">'+esc(a.body.substring(0,60))+(a.body.length>60?'...':'')+'</div>'+
+      '</div>'+
+      '<div style="display:flex;gap:6px;flex-shrink:0;">'+
+        '<div class="aedit" onclick="toggleAlertEdit(\'aef_'+a.id+'\')">✏️</div>'+
+        '<div class="adel" onclick="delAlert(&quot;'+a.id+'&quot;)">🗑</div>'+
+      '</div>'+
+      '<div class="aeditform" id="aef_'+a.id+'" style="width:100%;flex-basis:100%;">'+
+        '<div style="margin-bottom:8px;"><label class="fl">Növ</label>'+
+          '<select class="fs" id="aet_'+a.id+'">'+
+            '<option value="warning"'+(a.type==='warning'?' selected':'')+'>⚠️ Xəbərdarlıq</option>'+
+            '<option value="info"'+(a.type==='info'?' selected':'')+'>ℹ️ Məlumat</option>'+
+            '<option value="danger"'+(a.type==='danger'?' selected':'')+'>🔴 Təcili</option>'+
+          '</select>'+
+        '</div>'+
+        '<div style="margin-bottom:8px;"><label class="fl">Başlıq</label>'+
+          '<input class="fi" id="aeti_'+a.id+'" value="'+esc(a.title)+'"/>'+
+        '</div>'+
+        '<div style="margin-bottom:8px;"><label class="fl">Mətn</label>'+
+          '<textarea class="fi" id="aeb_'+a.id+'" style="height:70px;resize:none;">'+esc(a.body)+'</textarea>'+
+        '</div>'+
+        '<button class="esbtn" onclick="saveAlertEdit(&quot;'+a.id+'&quot;)">✓ YADDA SAXLA</button>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+
+function toggleAlertEdit(id){
+  var el = document.getElementById(id);
+  if(el) el.classList.toggle('open');
+}
+
+function saveAlertEdit(id){
+  var title = document.getElementById('aeti_'+id).value.trim();
+  var body = document.getElementById('aeb_'+id).value.trim();
+  var type = document.getElementById('aet_'+id).value;
+  if(!title||!body){ showToast('⚠️ Boş qoymayın', true); return; }
+  db.collection('alerts').doc(id).update({title:title, body:body, type:type})
+    .then(function(){
+      showToast('✅ Yadda saxlandı!');
+      var el = document.getElementById('aef_'+id);
+      if(el) el.classList.remove('open');
+    })
+    .catch(function(e){ showToast('❌ Xəta', true); console.error(e); });
+}
+
+function updateAlertBadge(){
+  var badge = document.getElementById('menuAlertBadge');
+  if(!badge) return;
+  if(allAlerts.length > 0){
+    badge.textContent = allAlerts.length;
+    badge.style.display = 'inline-block';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+function addAlert(){
+  var title = document.getElementById('alTitle').value.trim();
+  var body = document.getElementById('alBody').value.trim();
+  var type = document.getElementById('alType').value;
+  if(!title||!body){ showToast('⚠️ Başlıq və mətn mütləqdir', true); return; }
+  alertsCol.add({title:title, body:body, type:type, createdAt:Date.now()})
+    .then(function(){
+      document.getElementById('alTitle').value='';
+      document.getElementById('alBody').value='';
+      showToast('✅ Xəbərdarlıq əlavə edildi!');
+    })
+    .catch(function(){ showToast('❌ Xəta baş verdi', true); });
+}
+
+function delAlert(id){
+  if(!confirm('Bu xəbərdarlığı silmək istəyirsiniz?')) return;
+  db.collection('alerts').doc(id).delete()
+    .then(function(){ showToast('🗑️ Silindi'); })
+    .catch(function(){ showToast('❌ Silinmədi', true); });
+}
+// ────────────────────────────────────────────────────
+let toastTimer;
+function showToast(msg, isErr){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (isErr ? ' err' : '');
+  clearTimeout(toastTimer);
+  setTimeout(function(){ t.classList.add('show'); }, 10);
+  toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 2800);
+}
+
+</script>
+</body>
+</html>
